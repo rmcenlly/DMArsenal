@@ -43,11 +43,10 @@ li.nav a:hover {
 
 .hamburger {
     float: right;
-    border: 2px solid black;
     border-radius: 5px;
     position: fixed;
-    top: 0.5em;
-    right: 0.2em;
+    top: 4%;
+    right: 1%;
 }
 
 .main {
@@ -57,11 +56,17 @@ li.nav a:hover {
 }
 
 h1 {
-    position: sticky;
-    top: 0em;
+  margin: 0;
+  max-width: 80%;
+}
+
+.H1Container {
+    position: fixed;
+    top: 0;
+    width: 100%;
     background-color: white;
-    padding: 0.7em 1em;
-    margin: 0;
+    padding: 10% 1em;
+    margin: 0 0 10% 0;
 }
 
 table {
@@ -69,13 +74,14 @@ table {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 30%;
 }
 
 th {
   background-color: #721121;
   color: white;
   padding: 1em 0.4em;
-  top: 5em;
+  top: 12%;
   position: sticky;
 }
 
