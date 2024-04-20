@@ -14409,7 +14409,7 @@ const monsters = [
     Saves: [],
     Skills: [],
     Senses: ["darkvision 60 ft.", "truesight 60 ft."],
-    Challenge: "00",
+    Challenge: "0",
     Traits: [
       {
         Name: "Incorporeal Movement",
@@ -32277,119 +32277,187 @@ const monsters = [
 
 function calcXP(CR) {
     if (CR == String("0")) {
-        return "10"
+        return 10
     }
     else if (CR == String("1/8")) {
-        return "25"
+        return 25
     }
     else if (CR == String("1/4")) {
-        return "50"
+        return 50
     }
     else if (CR == String("1/2")) {
-        return "100"
+        return 100
     }
     else if (CR == String("1")) {
-        return "200"
+        return 200
     }
     else if (CR == String("2")) {
-        return "450"
+        return 450
     }
     else if (CR == String("3")) {
-        return "700"
+        return 700
     }
     else if (CR == String("4")) {
-        return "1,100"
+        return 1100
     }
     else if (CR == String("5")) {
-        return "1,800"
+        return 1800
     }
     else if (CR == String("6")) {
-        return "2,300"
+        return 2300
     }
     else if (CR == String("7")) {
-        return "2,900"
+        return 2900
     }
     else if (CR == String("8")) {
-        return "3,900"
+        return 3900
     }
     else if (CR == String("9")) {
-        return "5,000"
+        return 5000
     }
     else if (CR == String("10")) {
-        return "5,900"
+        return 5900
     }
     else if (CR == String("11")) {
-        return "7,200"
+        return 7200
     }
     else if (CR == String("12")) {
-        return "8,400"
+        return 8400
     }
     else if (CR == String("13")) {
-        return "10,000"
+        return 10000
     }
     else if (CR == String("14")) {
-        return "11,500"
+        return 11500
     }
     else if (CR == String("15")) {
-        return "13,000"
+        return 13000
     }
     else if (CR == String("16")) {
-        return "15,000"
+        return 15000
     }
     else if (CR == String("17")) {
-        return "18,000"
+        return 18000
     }
     else if (CR == String("18")) {
-        return "20,000"
+        return 20000
     }
     else if (CR == String("19")) {
-        return "22,000"
+        return 22000
     }
     else if (CR == String("20")) {
-        return "25,000"
+        return 25000
     }
     else if (CR == String("21")) {
-        return "33,000"
+        return 33000
     }
     else if (CR == String("22")) {
-        return "41,000"
+        return 41000
     }
     else if (CR == String("23")) {
-        return "50,000"
+        return 50000
     }
     else if (CR == String("24")) {
-        return "62,000"
+        return 62000
     }
     else if (CR == String("25")) {
-        return "75,000"
+        return 75000
     }
     else if (CR == String("26")) {
-        return "90,000"
+        return 90000
     }
     else if (CR == String("27")) {
-        return "105,000"
+        return 105000
     }
     else if (CR == String("28")) {
-        return "120,000"
+        return 120000
     }
     else if (CR == String("29")) {
-        return "135,000"
+        return 135000
     }
     else if (CR == String("30")) {
-        return "155,000"
+        return 155000
     }
 
     
+};
+
+let sortVal
+
+function sort(col) {
+    if (col == "Challenge" || col == "XP") {
+        console.log("XP")
+        monsters.sort((a, b) => a.Name.replaceAll(" ", "").localeCompare(b.Name.replaceAll(" ", "")));
+        if (sortVal == "XPDown") {            
+            monsters.sort((a, b) => b.XP - a.XP)
+            sortVal = "XPUp"
+        } else {
+            monsters.sort((a, b) => a.XP - b.XP)
+            sortVal = "XPDown"
+        }
+    }
+    else if (col == "Name") {
+        if (sortVal == "nameDown") {
+            monsters.sort((a, b) => b.Name.replaceAll(" ", "").localeCompare(a.Name.replaceAll(" ", "")));
+            sortVal = "nameUp"
+        } else {
+            monsters.sort((a, b) => a.Name.replaceAll(" ", "").localeCompare(b.Name.replaceAll(" ", "")));
+            sortVal = "nameDown"
+        }
+    }
+    else if (col == "HP") {
+        monsters.sort((a, b) => a.Name.replaceAll(" ", "").localeCompare(b.Name.replaceAll(" ", "")));
+        if (sortVal == "HPDown") {            
+            monsters.sort((a, b) => b.HP - a.HP)
+            sortVal = "HPUp"
+        } else {
+            monsters.sort((a, b) => a.HP - b.HP)
+            sortVal = "HPDown"
+        }
+    }
+    else if (col == "AC") {
+        monsters.sort((a, b) => a.Name.replaceAll(" ", "").localeCompare(b.Name.replaceAll(" ", "")));
+        if (sortVal == "ACDown") {            
+            monsters.sort((a, b) => b.AC - a.AC)
+            sortVal = "ACUp"
+        } else {
+            monsters.sort((a, b) => a.AC - b.AC)
+            sortVal = "ACDown"
+        }
+    }
+    printMonsters()
+};
+
+monsters.forEach((monster) => {
+    monster["XP"] = calcXP(monster.Challenge)
+})
+
+function printMonsters() {
+    const tb = document.getElementById("tb");
+    let tr = [];
+    monsters.forEach((monster) => {
+    tr.push("<tr><td>" + monster.Name + "</td>");
+    tr.push("<td>" + monster.HP + "</td>");
+    tr.push("<td>" + monster.AC + "</td>");
+    tr.push("<td>" + monster.Challenge + "</td>");
+    let XP = String(monster.XP);
+    if (XP.length > 3) {
+        let leading = XP.slice(0, XP.length-3)
+        let trailing = XP.slice(-3)
+        XP = leading + "," + trailing;
+    }
+    tr.push("<td>" + XP + "</td>");
+    });
+    tb.innerHTML = tr.join("");
+    document.getElementById("result").classList.remove("hide"); // show
 }
 
-const tb = document.getElementById("tb");
-let tr = [];
-monsters.forEach((monster) => {
-  tr.push("<tr><td>" + monster.Name + "</td>");
-  tr.push("<td>" + monster.HP + "</td>");
-  tr.push("<td>" + monster.AC + "</td>");
-  tr.push("<td>" + monster.Challenge + "</td>");
-  tr.push("<td>" + calcXP(monster.Challenge) + "</td>");
-});
-tb.innerHTML = tr.join("");
-document.getElementById("result").classList.remove("hide"); // show
+sort("Name")
+
+function closeNav() {
+    document.getElementById("navMenu").style.width = "0%";
+}
+
+function openNav() {
+    document.getElementById("navMenu").style.width = "66%";
+}

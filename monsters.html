@@ -5,31 +5,58 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
   <body>
-    <ul class="nav">
+    <ul class="nav" id="navMenu">
+      <li class="nav-close nav">
+        <span
+          class="material-symbols-outlined"
+          style="font-size: 2.5em"
+          onclick="closeNav()"
+        >
+          close
+        </span>
+      </li>
       <li class="nav"><a class="nav" href="./home.html">Home</a></li>
-      <li class="nav"><a class="nav active" href="./monsters.html">Monsters</a></li>
+      <li class="nav">
+        <a class="nav active" href="./monsters.html">Monsters</a>
+      </li>
       <li class="nav"><a class="nav" href="#contact">Players</a></li>
       <li class="nav"><a class="nav" href="#about">Encounters</a></li>
       <li class="nav"><a class="nav" href="#about">Tracker</a></li>
     </ul>
     <div class="main">
-      <h1>Dungeon Masters Arsenal</h1>
+      <h1>Monsters</h1>
+      <div class="hamburger">
+      <span
+        class="material-symbols-outlined hamburger"
+        style="font-size: 2.5em"
+        onclick="openNav()"
+      >
+        menu
+      </span>
+    </div>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>HP</th>
-            <th>AC</th>
-            <th>Challenge</th>
-            <th>XP</th>
+            <th onclick="sort('Name')">Name</th>
+            <th onclick="sort('HP')">HP</th>
+            <th onclick="sort('AC')">AC</th>
+            <th onclick="sort('Challenge')">Challenge</th>
+            <th onclick="sort('XP')">XP</th>
           </tr>
         </thead>
-        <tbody id="tb">
-        </tbody>
+        <tbody id="tb"></tbody>
       </table>
     </div>
-    <script src="script.js"></script> 
+    <script src="script.js"></script>
   </body>
 </html>
