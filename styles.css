@@ -167,10 +167,19 @@ tr:hover {
         position: static;
         padding: 0.7em 0em
     }
+
+    .H1Container {
+        position: static;
+        top: 0;
+        background-color: white;
+        padding: 1em;
+        margin: 0;
+    }
   
     table {
       border-collapse: collapse;
       width: 100%;
+      margin-top: 0%;
     }
   
     th {
@@ -178,7 +187,8 @@ tr:hover {
       color: white;
       padding: 1em;
       font-size: 1.1em;
-      position: static;
+      top: 3em;
+      /* position: static; */
     }
   
     td {
