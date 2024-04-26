@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <head>
+      <title>Monster Data</title>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="styles.css" />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      />
+      <script
+        src="https://kit.fontawesome.com/33c44d6be5.js"
+        crossorigin="anonymous"
+      ></script>
+    </head>
+  </head>
+  <body>
+    <ul class="nav" id="navMenu">
+      <li class="nav-close nav" onclick="closeNav()">
+        <i class="fa-solid fa-xmark"></i>
+      </li>
+      <li class="nav"><a class="nav" href="./home.html">Home</a></li>
+      <li class="nav">
+        <a class="nav active" href="./monsters.html">Monsters</a>
+      </li>
+      <li class="nav"><a class="nav" href="#contact">Players</a></li>
+      <li class="nav"><a class="nav" href="#about">Encounters</a></li>
+      <li class="nav"><a class="nav" href="#about">Tracker</a></li>
+    </ul>
+    <div class="main">
+      <div class="H1Container">
+        <h1 id="h1">Monsters</h1>
+        <h1 onclick="openNav()" class="hamburger">
+          <i class="fa-solid fa-bars"></i>
+        </h1>
+      </div>
+      <div id="data"></div>
+    </div>
+
+    <!--
+        KEYS:
+        //Name
+        //Type
+        //HP
+        //AC
+        //Speed (arr)
+        //Abilities (obj)
+        //DamageVulnerabilities (arr)
+        //DamageResistances (arr)
+        //DamageImmunities (arr)
+        //ConditionImmunities (arr)
+        //Saves (arr[obj])
+        Skills (arr[obj])
+        //Senses (arr)
+        //Challenge
+        //Traits (arr[obj])
+        Actions (arr[obj])
+        Reactions (arr[obj])
+        LegendaryActions (arr[obj])
+        //Size
+        //Alignment
+        //XP
+    -->
+
+    <script>
+      // Get the unique ID from the URL query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const uniqueId = urlParams.get("id");
+
+      // Get the data from localStorage
+      const storedData = localStorage.getItem(`rowData-${uniqueId}`);
+      if (storedData) {
+        const jsonData = JSON.parse(storedData);
+        document.title = jsonData.Name + " Stats";
+        console.log(jsonData);
+        document.getElementById("h1").innerHTML = jsonData.Name;
+        document.getElementById("data").innerHTML +=
+          "<div class='monsterStats grid1'><p style='font-weight: bold'>" +
+          jsonData.Size +
+          " " +
+          jsonData.Type +
+          ", " +
+          jsonData.Alignment +
+          "</p><p><b>Challenge Rating: </b>" +
+          jsonData.Challenge +
+          ", <b>XP: </b>" +
+          jsonData.XP +
+          "</p></div>";
+        document.getElementById("data").innerHTML +=
+          "<div class='monsterStats grid2'>" +
+          printMonsterStats(jsonData.Speed, "Speed") +
+          printMonsterStats(jsonData.Senses, "Senses") +
+          "</div>";
+        document.getElementById("data").innerHTML +=
+          `<ul class='monsterStats abilities' style='display: grid; grid-template-columns: 50% 50%; grid-column: 3 / 4'>
+                <li class=HPAC>HP</br>` +
+          jsonData.HP +
+          `</li>
+                <li class=HPAC>AC</br>` +
+          jsonData.AC +
+          `</li>`;
+        document.getElementById("data").innerHTML +=
+          "<ul id='Abilities' class='monsterStats abilities' style='display: grid; grid-template-columns: 16% 16% 16% 16% 16% 16%; grid-column: 1 / 4'>";
+        for (const key in jsonData.Abilities) {
+          document.getElementById("Abilities").innerHTML +=
+            "<li class='abilityScore'>" +
+            key +
+            "</br>" +
+            jsonData.Abilities[key] +
+            "</li>";
+        }
+        document.getElementById("data").innerHTML +=
+          `
+        <div class="monsterStats grid1">
+          ` +
+          printMonsterStats(jsonData.DamageVulnerabilities, "Vulnerabilities") +
+          printMonsterStats(jsonData.DamageResistances, "Resistances") +
+          `</div>
+          `;
+        document.getElementById("data").innerHTML +=
+          `
+        <div class="monsterStats grid2">
+          ` +
+          printMonsterStats(jsonData.DamageImmunities, "Immunities") +
+          printMonsterStats(jsonData.DamageResistances, "Resistances") +
+          `</div>
+          `;
+        document.getElementById("data").innerHTML +=
+          `
+        <div class="grid3">
+          ` +
+          printMonsterStats(jsonData.Saves, "Saves") +
+          printMonsterStats(jsonData.Traits, "Traits") +
+          `</div>
+          `;
+        document.getElementById("data").innerHTML +=
+          `<div style="grid-column: 1 / 4;">` +
+          printMonsterStats(jsonData.Skills, "Skills") +
+          `</div>`;
+        document.getElementById("data").innerHTML +=
+          `<div id="Actions" class="grid1"` +
+          printActions(jsonData.Actions, "Actions") +
+          `</div>`;
+        document.getElementById("data").innerHTML +=
+          `<div id="Actions" class="grid2"` +
+          printActions(jsonData.Reactions, "Reactions") +
+          `</div>`;
+        document.getElementById("data").innerHTML +=
+          `<div id="Actions" class="grid3"` +
+          printActions(jsonData.LegendaryActions, "LegendaryActions") +
+          `</div>`;
+      }
+
+      function printMonsterStats(stat, statName) {
+        let statString = "<p><b>" + statName + ":</b> ";
+        if (stat.length > 0) {
+          for (let i = 0; i < stat.length - 1; i++) {
+            if (typeof stat[i] != "object") {
+              statString += stat[i] + ", ";
+            } else {
+              for (const key in stat[i]) {
+                if (key == "Modifier") {
+                  statString += "+" + stat[i][key];
+                } else {
+                  statString += stat[i][key];
+                }
+                if (key == "Name") {
+                  statString += ": ";
+                } else if (i < stat.length - 2) {
+                  statString += ", ";
+                }
+              }
+            }
+          }
+          if (typeof stat[stat.length - 1] != "object") {
+            statString += stat[stat.length - 1];
+            statString += "</p>";
+          }
+        } else {
+          statString += "None </p>";
+        }
+        return statString;
+      }
+
+      function printActions(action, actionName) {
+        let actionString = "<p><b>" + actionName + "</b></p>";
+        for (let i = 0; i < action.length; i++) {
+          actionString += "<p><b>" + action[i].Name + ": </b>" + action[i].Content + action[i].Usage + "</p>";
+        }
+        return actionString;
+      }
+
+      // Remove the data from localStorage when the tab is closed
+      // window.addEventListener('beforeunload', function() {
+      //     localStorage.removeItem(`rowData-${uniqueId}`);
+      // });
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

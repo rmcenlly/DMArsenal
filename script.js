@@ -9,7 +9,7 @@ async function getMonsterData() {
   return monsterData;
 }
 
-getMonsterData().then(function(value) {
+getMonsterData().then(function (value) {
   myDisplayer(value);
 });
 
@@ -17,7 +17,7 @@ function myDisplayer(value) {
   monsters.forEach((monster) => {
     monster["XP"] = calcXP(monster.Challenge);
   });
-  sort("Name")
+  sort("Name");
 }
 
 function calcXP(CR) {
@@ -97,47 +97,23 @@ function calcXP(CR) {
 let sortVal;
 
 function sort(col) {
-  document.getElementById(
-    "XP"
-  ).innerHTML = `XP <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-  expand_more
-  </span>`;
-  document.getElementById(
-    "AC"
-  ).innerHTML = `AC <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-  expand_more
-  </span>`;
-  document.getElementById(
-    "HP"
-  ).innerHTML = `HP <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-  expand_more
-  </span>`;
-  document.getElementById(
-    "Name"
-  ).innerHTML = `Name <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-  expand_more
-  </span>`;
+  document.getElementById("Challenge").innerHTML = `Challenge <i class="fa-solid fa-caret-down"></i>`;
+  document.getElementById("AC").innerHTML = `AC <i class="fa-solid fa-caret-down"></i>`;
+  document.getElementById("HP").innerHTML = `HP <i class="fa-solid fa-caret-down"></i>`;
+  document.getElementById("Name").innerHTML = `Name <i class="fa-solid fa-caret-down"></i>`;
 
   if (col == "Challenge" || col == "XP") {
     monsters.sort((a, b) =>
       a.Name.replaceAll(" ", "").localeCompare(b.Name.replaceAll(" ", ""))
     );
-    if (sortVal == "XPDown") {
+    if (sortVal == "ChallengeDown") {
       monsters.sort((a, b) => b.XP - a.XP);
-      sortVal = "XPUp";
-      document.getElementById(
-        "XP"
-      ).innerHTML = `XP <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_less
-            </span>`;
+      sortVal = "ChallengeUp";
+      document.getElementById("Challenge").innerHTML = `Challenge <i class="fa-solid fa-caret-up"></i>`;
     } else {
       monsters.sort((a, b) => a.XP - b.XP);
-      sortVal = "XPDown";
-      document.getElementById(
-        "XP"
-      ).innerHTML = `XP <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_more
-            </span>`;
+      sortVal = "ChallengeDown";
+      document.getElementById("Challenge").innerHTML = `Challenge <i class="fa-solid fa-caret-down"></i>`;
     }
   } else if (col == "Name") {
     if (sortVal == "nameDown") {
@@ -145,21 +121,13 @@ function sort(col) {
         b.Name.replaceAll(" ", "").localeCompare(a.Name.replaceAll(" ", ""))
       );
       sortVal = "nameUp";
-      document.getElementById(
-        "Name"
-      ).innerHTML = `Name <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_less
-            </span>`;
+      document.getElementById("Name").innerHTML = `Name <i class="fa-solid fa-caret-up"></i>`;
     } else {
       monsters.sort((a, b) =>
         a.Name.replaceAll(" ", "").localeCompare(b.Name.replaceAll(" ", ""))
       );
       sortVal = "nameDown";
-      document.getElementById(
-        "Name"
-      ).innerHTML = `Name <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_more
-            </span>`;
+      document.getElementById("Name").innerHTML = `Name <i class="fa-solid fa-caret-down"></i>`;
     }
   } else if (col == "HP") {
     monsters.sort((a, b) =>
@@ -168,19 +136,11 @@ function sort(col) {
     if (sortVal == "HPDown") {
       monsters.sort((a, b) => b.HP - a.HP);
       sortVal = "HPUp";
-      document.getElementById(
-        "HP"
-      ).innerHTML = `HP <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_less
-            </span>`;
+      document.getElementById("HP").innerHTML = `HP <i class="fa-solid fa-caret-up"></i>`;
     } else {
       monsters.sort((a, b) => a.HP - b.HP);
       sortVal = "HPDown";
-      document.getElementById(
-        "HP"
-      ).innerHTML = `HP <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_more
-            </span>`;
+      document.getElementById("HP").innerHTML = `HP <i class="fa-solid fa-caret-down"></i>`;
     }
   } else if (col == "AC") {
     monsters.sort((a, b) =>
@@ -189,19 +149,11 @@ function sort(col) {
     if (sortVal == "ACDown") {
       monsters.sort((a, b) => b.AC - a.AC);
       sortVal = "ACUp";
-      document.getElementById(
-        "AC"
-      ).innerHTML = `AC <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_less
-            </span>`;
+      document.getElementById("AC").innerHTML = `AC <i class="fa-solid fa-caret-up"></i>`;
     } else {
       monsters.sort((a, b) => a.AC - b.AC);
       sortVal = "ACDown";
-      document.getElementById(
-        "AC"
-      ).innerHTML = `AC <span class="material-symbols-outlined" style="display: inline-block; position: absolute; top: 25%">
-            expand_more
-            </span>`;
+      document.getElementById("AC").innerHTML = `AC <i class="fa-solid fa-caret-down"></i>`;
     }
   }
   printMonsters();
@@ -210,11 +162,23 @@ function sort(col) {
 function printMonsters() {
   const tb = document.getElementById("tb");
   let tr = [];
+  let i = 0;
   monsters.forEach((monster) => {
-    tr.push("<tr id=" + monster.Name + "><td>" + monster.Name + "</td>");
+    tr.push(
+      "<tr id=" +
+        monster.Name +
+        " data-id=" +
+        i +
+        "><td style='cursor:pointer' onclick='clickRows(" +
+        i +
+        ")'>" +
+        monster.Name +
+        "</td>"
+    );
     tr.push("<td>" + monster.HP + "</td>");
     tr.push("<td>" + monster.AC + "</td>");
-    tr.push("<td>" + monster.XP + "</td>");
+    tr.push("<td>" + monster.Challenge + "</td>");
+    i++;
   });
   tb.innerHTML = tr.join("");
 }
@@ -225,4 +189,38 @@ function closeNav() {
 
 function openNav() {
   document.getElementById("navMenu").style.width = "66%";
+}
+
+function clickRows(idx, monName) {
+  console.log("clicked");
+  // const rowIndex = this.getAttribute("data-index");
+  const jsonData = monsters[idx]; // Implement this function to get the JSON data for the row index
+  const uniqueId = Date.now(); // Unique identifier for the new page
+  localStorage.setItem(`rowData-${uniqueId}`, JSON.stringify(jsonData));
+  window.open(`newpage.html?id=${uniqueId}`, "_blank");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("tb");
+  const rows = table.getElementsByTagName("tr");
+  for (let i = 0; i < rows.length; i++) {
+    rows[i].addEventListener("click", function () {
+      console.log("clicked");
+      const rowIndex = this.getAttribute("data-index");
+      const jsonData = getDataForRow(rowIndex); // Implement this function to get the JSON data for the row index
+      const uniqueId = Date.now(); // Unique identifier for the new page
+      localStorage.setItem(`rowData-${uniqueId}`, JSON.stringify(jsonData));
+      window.open(`newpage.html?id=${uniqueId}`, "_blank");
+    });
+  }
+});
+
+function getDataForRow(index) {
+  // Implement this function to get the JSON data for the given row index
+  // For demonstration purposes, return a sample JSON object
+  const jsonData = [
+    { name: "John Doe", age: 30, email: "john.doe@example.com" },
+    { name: "Jane Smith", age: 25, email: "jane.smith@example.com" },
+  ];
+  return jsonData[index];
 }
