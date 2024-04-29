@@ -197,9 +197,9 @@
       }
 
       // Remove the data from localStorage when the tab is closed
-      // window.addEventListener('beforeunload', function() {
-      //     localStorage.removeItem(`rowData-${uniqueId}`);
-      // });
+       window.addEventListener('beforeunload', function() {
+          localStorage.removeItem(`rowData-${uniqueId}`);
+       });
     </script>
     <script src="script.js"></script>
   </body>
