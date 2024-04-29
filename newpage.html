@@ -3,6 +3,7 @@
   <head>
     <head>
       <title>Monster Data</title>
+      <link rel="icon" type="image/x-icon" href="favicon.ico">
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="stylesheet" href="styles.css" />
@@ -98,22 +99,22 @@
           printMonsterStats(jsonData.Senses, "Senses") +
           "</div>";
         document.getElementById("data").innerHTML +=
-          `<ul class='monsterStats abilities' style='display: grid; grid-template-columns: 50% 50%; grid-column: 3 / 4'>
-                <li class=HPAC>HP</br>` +
+          `<div id="HpAc" class='monsterStats abilities grid3' `/*style='display: grid; grid-template-columns: 50% 50%; grid-column: 3 / 4'*/+`>
+                <p class=abilityScore><b>HP</b></br>` +
           jsonData.HP +
-          `</li>
-                <li class=HPAC>AC</br>` +
+          `</p>
+                <p class=abilityScore><b>AC</b></br>` +
           jsonData.AC +
-          `</li>`;
+          `</p></div>`;
         document.getElementById("data").innerHTML +=
-          "<ul id='Abilities' class='monsterStats abilities' style='display: grid; grid-template-columns: 16% 16% 16% 16% 16% 16%; grid-column: 1 / 4'>";
+          "<div id='Abilities' class='monsterStats abilities grid1'>";
         for (const key in jsonData.Abilities) {
           document.getElementById("Abilities").innerHTML +=
-            "<li class='abilityScore'>" +
+            "<p class='abilityScore'><b>" +
             key +
-            "</br>" +
+            "</b></br>" +
             jsonData.Abilities[key] +
-            "</li>";
+            "</p></div>";
         }
         document.getElementById("data").innerHTML +=
           `
@@ -133,27 +134,27 @@
           `;
         document.getElementById("data").innerHTML +=
           `
-        <div class="grid3">
+        <div class="monsterStats grid3">
           ` +
           printMonsterStats(jsonData.Saves, "Saves") +
           printMonsterStats(jsonData.Traits, "Traits") +
           `</div>
           `;
         document.getElementById("data").innerHTML +=
-          `<div style="grid-column: 1 / 4;">` +
+          `<div id="skills" class="monsterStats">` +
           printMonsterStats(jsonData.Skills, "Skills") +
           `</div>`;
         document.getElementById("data").innerHTML +=
-          `<div id="Actions" class="grid1"` +
+          `<div id="Actions" class="grid1">` +
           printActions(jsonData.Actions, "Actions") +
           `</div>`;
         document.getElementById("data").innerHTML +=
-          `<div id="Actions" class="grid2"` +
+          `<div id="Actions" class="grid2">` +
           printActions(jsonData.Reactions, "Reactions") +
           `</div>`;
         document.getElementById("data").innerHTML +=
-          `<div id="Actions" class="grid3"` +
-          printActions(jsonData.LegendaryActions, "LegendaryActions") +
+          `<div id="Actions" class="grid3">` +
+          printActions(jsonData.LegendaryActions, "Legendary Actions") +
           `</div>`;
       }
 
@@ -189,11 +190,21 @@
       }
 
       function printActions(action, actionName) {
-        let actionString = "<p><b>" + actionName + "</b></p>";
-        for (let i = 0; i < action.length; i++) {
-          actionString += "<p><b>" + action[i].Name + ": </b>" + action[i].Content + action[i].Usage + "</p>";
+        if (action.length) {
+          let actionString = "<h2>" + actionName + "</h2>";
+          for (let i = 0; i < action.length; i++) {
+            actionString +=
+              "<p><b>" +
+              action[i].Name +
+              ": </b>" +
+              action[i].Content +
+              action[i].Usage +
+              "</p>";
+          }
+          return actionString;
+        } else {
+          return "";
         }
-        return actionString;
       }
 
       // Remove the data from localStorage when the tab is closed
