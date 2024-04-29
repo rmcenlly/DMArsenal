@@ -1,0 +1,8 @@
+Clean up JS file (split into multiple files, change XPCalc to switch)
+Add Search and filter to Monsters
+Add way to get most recently viewed Monster
+Campaigns: 
+   Create campaign form.
+   Display campaigns with short descriptor, clicking on campaign opens it in new page.
+   Descriptor includes: Num of Players, Max of each stat?
+   Make a way to see most recently viewed
