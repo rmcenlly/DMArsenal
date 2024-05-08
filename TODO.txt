@@ -6,3 +6,5 @@ Campaigns:
    Display campaigns with short descriptor, clicking on campaign opens it in new page.
    Descriptor includes: Num of Players, Max of each stat?
    Make a way to see most recently viewed
+
+Use Classes to parse new monster text into JSON
