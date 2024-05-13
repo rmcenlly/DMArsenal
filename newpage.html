@@ -166,16 +166,17 @@
               statString += stat[i] + ", ";
             } else {
               for (const key in stat[i]) {
-                if (key == "Modifier") {
-                  statString += "+" + stat[i][key];
-                } else {
-                  statString += stat[i][key];
-                }
-                if (key == "Name") {
-                  statString += ": ";
-                } else if (i < stat.length - 2) {
-                  statString += ", ";
-                }
+                statString += key + (stat[i][key] ? ": " + stat[i][key] + "<br>" : "<br>")
+                // if (key == "Modifier") {
+                //   statString += "+" + stat[i][key];
+                // } else {
+                //   statString += stat[i][key];
+                // }
+                // if (key == "Name") {
+                //   statString += ": ";
+                // } else if (i < stat.length - 2) {
+                //   statString += ", ";
+                // }
               }
             }
           }
@@ -193,13 +194,16 @@
         if (action.length) {
           let actionString = "<h2>" + actionName + "</h2>";
           for (let i = 0; i < action.length; i++) {
-            actionString +=
-              "<p><b>" +
-              action[i].Name +
-              ": </b>" +
-              action[i].Content +
-              action[i].Usage +
-              "</p>";
+            for (const key in action[i]) {
+              actionString += `<p><b>` + key + (action[i][key] != 0 ? `: </b>` : `</b>`) + action[i][key]  + "</p>";
+            }
+            // actionString +=
+            //   "<p><b>" +
+            //   action[i].Name +
+            //   ": </b>" +
+            //   action[i].Content +
+            //   action[i].Usage +
+            //   "</p>";
           }
           return actionString;
         } else {
@@ -207,10 +211,10 @@
         }
       }
 
-      // Remove the data from localStorage when the tab is closed
-       window.addEventListener('beforeunload', function() {
-          localStorage.removeItem(`rowData-${uniqueId}`);
-       });
+      // // Remove the data from localStorage when the tab is closed
+      //  window.addEventListener('beforeunload', function() {
+      //     localStorage.removeItem(`rowData-${uniqueId}`);
+      //  });
     </script>
     <script src="script.js"></script>
   </body>

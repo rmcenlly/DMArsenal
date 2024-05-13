@@ -2,10 +2,12 @@ const monsterStats = new Object();
 const monsters = [];
 
 async function getMonsterData() {
-  const response = await fetch("./monsters.json");
+  const response = await fetch("./monsterDict.json");
   const monsterData = await response.json();
-  monsterStats.Stats = monsterData.Data;
-  monsters.push(...monsterData.Data); // Push each object in the array into monsters
+  for (const key in monsterData) {
+    monsters.push(monsterData[key]);
+  }
+  // monsters.push(...monsterData.Data); // Push each object in the array into monsters
   return monsterData;
 }
 
