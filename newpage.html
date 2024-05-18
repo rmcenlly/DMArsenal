@@ -3,7 +3,7 @@
   <head>
     <head>
       <title>Monster Data</title>
-      <link rel="icon" type="image/x-icon" href="favicon.ico">
+      <link rel="icon" type="image/x-icon" href="favicon.ico" />
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="stylesheet" href="styles.css" />
@@ -41,7 +41,9 @@
           <i class="fa-solid fa-bars"></i>
         </h1>
       </div>
-      <div id="data"></div>
+      <div id="bodyContent">
+        <div id="data"></div>
+      </div>
     </div>
 
     <!--
@@ -99,7 +101,8 @@
           printMonsterStats(jsonData.Senses, "Senses") +
           "</div>";
         document.getElementById("data").innerHTML +=
-          `<div id="HpAc" class='monsterStats abilities grid3' `/*style='display: grid; grid-template-columns: 50% 50%; grid-column: 3 / 4'*/+`>
+          `<div id="HpAc" class='monsterStats abilities grid3' ` /*style='display: grid; grid-template-columns: 50% 50%; grid-column: 3 / 4'*/ +
+          `>
                 <p class=abilityScore><b>HP</b></br>` +
           jsonData.HP +
           `</p>
@@ -166,7 +169,8 @@
               statString += stat[i] + ", ";
             } else {
               for (const key in stat[i]) {
-                statString += key + (stat[i][key] ? ": " + stat[i][key] + "<br>" : "<br>")
+                statString +=
+                  key + (stat[i][key] ? ": " + stat[i][key] + "<br>" : "<br>");
                 // if (key == "Modifier") {
                 //   statString += "+" + stat[i][key];
                 // } else {
@@ -195,7 +199,12 @@
           let actionString = "<h2>" + actionName + "</h2>";
           for (let i = 0; i < action.length; i++) {
             for (const key in action[i]) {
-              actionString += `<p><b>` + key + (action[i][key] != 0 ? `: </b>` : `</b>`) + action[i][key]  + "</p>";
+              actionString +=
+                `<p><b>` +
+                key +
+                (action[i][key] != 0 ? `: </b>` : `</b>`) +
+                action[i][key] +
+                "</p>";
             }
             // actionString +=
             //   "<p><b>" +
@@ -211,10 +220,10 @@
         }
       }
 
-      // // Remove the data from localStorage when the tab is closed
-      //  window.addEventListener('beforeunload', function() {
-      //     localStorage.removeItem(`rowData-${uniqueId}`);
-      //  });
+      // Remove the data from localStorage when the tab is closed
+       window.addEventListener('beforeunload', function() {
+          localStorage.removeItem(`rowData-${uniqueId}`);
+       });
     </script>
     <script src="script.js"></script>
   </body>

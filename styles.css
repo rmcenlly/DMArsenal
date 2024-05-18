@@ -58,19 +58,10 @@ li.nav a:hover {
   background-position-y: 90%;
 }
 
-/* .main::before {
-  content: "";
-  background-image: url(DMAIcon.png);
-  background-size: contain;
-  position: absolute;
-  background-repeat: no-repeat;
-  top: 10%;
-  right: 0;
-  bottom: 0px;
-  left: 30%;
-  opacity: 0.1;
-  background-attachment: fixed;
-} */
+#bodyContent {
+  height: 89vh;
+  overflow-y: auto;
+}
 
 h1 {
   margin: 0;
@@ -78,11 +69,9 @@ h1 {
 }
 
 .H1Container {
-  z-index: 1;
-  position: fixed;
+  position: static;
   top: 0;
   width: 90%;
-  background-color: white;
   padding: 1em 1em;
   margin: 0;
   display: flex;
@@ -91,19 +80,24 @@ h1 {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  height: 80%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 25%;
+}
+
+tbody {
+  overflow-y: auto;
+}
+
+thead {
+  position: sticky;
+  top: 0;
 }
 
 th {
   background-color: #721121;
   color: white;
   padding: 1em 0.4em;
-  top: 8.9%;
-  position: sticky;
-  font-size: small;
 }
 
 td {
@@ -135,9 +129,9 @@ tr:hover {
   background-color: rgba(191, 6, 3, 0.5);
 }
 
-td:first-child {
+td:first-child, td:last-child {
   width: 100%;
-  max-width: 50%;
+  max-width: 30%;
 }
 
 #data {
@@ -245,9 +239,13 @@ td:first-child {
   }
 
   .main {
-    padding: 2em;
+    padding: 2em 2em 0 2em;
     margin-top: 30px;
     font-size: 1.05em;
+  }
+
+  #bodyContent {
+    height: 80vh;
   }
 
   h1 {
@@ -258,15 +256,14 @@ td:first-child {
   .H1Container {
     position: static;
     top: 0;
-    background-color: white;
     padding: 0;
     margin: 0;
   }
 
   table {
     border-collapse: collapse;
-    width: 100%;
     margin-top: 0%;
+    width: 100%;
   }
 
   th {

@@ -19,6 +19,7 @@ function myDisplayer(value) {
   monsters.forEach((monster) => {
     monster["XP"] = calcXP(monster.Challenge);
   });
+  console.log(monsterAlignments)
   sort("Name");
 }
 
@@ -100,7 +101,8 @@ let sortVal;
 
 function sort(col) {
   document.getElementById("Challenge").innerHTML = `Challenge <i class="fa-solid fa-caret-down"></i>`;
-  document.getElementById("AC").innerHTML = `AC <i class="fa-solid fa-caret-down"></i>`;
+  // document.getElementById("AC").innerHTML = `AC <i class="fa-solid fa-caret-down"></i>`;
+  document.getElementById("Type").innerHTML = `Type <i class="fa-solid fa-caret-down"></i>`;
   document.getElementById("HP").innerHTML = `HP <i class="fa-solid fa-caret-down"></i>`;
   document.getElementById("Name").innerHTML = `Name <i class="fa-solid fa-caret-down"></i>`;
 
@@ -130,6 +132,20 @@ function sort(col) {
       );
       sortVal = "nameDown";
       document.getElementById("Name").innerHTML = `Name <i class="fa-solid fa-caret-down"></i>`;
+    }
+  } else if (col == "Type") {
+    if (sortVal == "typeDown") {
+      monsters.sort((a, b) =>
+        b.Type.replaceAll(" ", "").localeCompare(a.Type.replaceAll(" ", ""))
+      );
+      sortVal = "typeUp";
+      document.getElementById("Type").innerHTML = `Type <i class="fa-solid fa-caret-up"></i>`;
+    } else {
+      monsters.sort((a, b) =>
+        a.Type.replaceAll(" ", "").localeCompare(b.Type.replaceAll(" ", ""))
+      );
+      sortVal = "typeDown";
+      document.getElementById("Type").innerHTML = `Type <i class="fa-solid fa-caret-down"></i>`;
     }
   } else if (col == "HP") {
     monsters.sort((a, b) =>
@@ -161,6 +177,47 @@ function sort(col) {
   printMonsters();
 }
 
+let minAC = 0;
+let maxAC = 25
+
+let minHP = 0;
+let maxHP = 725;
+
+let minChallenge = 0;
+let maxChallenge = 30;
+
+let monsterTypes = ['Humanoid', 'Dragon', 'Undead', 'Fiend', 'Monstrosity', 'Beast', 'Fey', 'Giant', 'Aberration', 'Celestial','Construct', 'Swarm'];
+let monsterSizes = [ 'MEDIUM', 'LARGE', 'HUGE', 'GARGANTUAN', 'SMALL', 'TINY' ]
+let monsterAlignments = []
+
+function setFilter(filter) {}
+
+function filterMonsters(monster) {
+  // let monAl = false;
+  if (minChallenge == 0 && maxChallenge == 30) {
+    if (!(monster.Challenge == "-" || ((Number(monster.Challenge >= 0)) && ((monster.Challenge <= 30))))) {
+      return false
+    }
+  }
+  if (!(minChallenge <= monster.Challenge && monster.Challenge <= maxChallenge)) {
+    return false
+  }
+  if (!(minHP <= monster.HP && monster.HP <= maxHP)) {
+    return false
+  }
+  if (!(minAC <= monster.AC && monster.AC <= maxAC)) {
+    return false
+  }
+  monsterTypes.forEach((type) => {
+    if (monster.Type.includes(type)) {
+      return false
+    }
+  });
+  if (!monsterSizes.includes(monster.Size.toUpperCase())) {
+    return false;
+  }
+}
+
 function printMonsters() {
   const tb = document.getElementById("tb");
   let tr = [];
@@ -177,10 +234,24 @@ function printMonsters() {
         monster.Name +
         "</td>"
     );
+    let typeFirst = monster.Type[0].toUpperCase();
+    let typeRest = monster.Type.slice(1, monster.Type.length);
+    monster.Type = typeFirst + typeRest;
+
     tr.push("<td>" + monster.HP + "</td>");
-    tr.push("<td>" + monster.AC + "</td>");
+    // tr.push("<td>" + monster.AC + "</td>");
+    tr.push("<td>" + monster.Type + "</td>");
     tr.push("<td>" + monster.Challenge + "</td>");
     i++;
+    if (monster.Alignment.includes("), ")) {
+      monster.Alignment = monster.Alignment.slice(monster.Alignment.indexOf("), ") + 3)
+    }
+    if (monster.Alignment.includes("typically")) {
+      monster.Alignment = monster.Alignment.slice(monster.Alignment.indexOf("typically") + 10)      
+    }
+    if (!(monsterAlignments.includes(monster.Alignment.toUpperCase()))) {
+      monsterAlignments.push(monster.Alignment.toUpperCase())
+    }
   });
   tb.innerHTML = tr.join("");
 }
@@ -202,27 +273,27 @@ function clickRows(idx, monName) {
   window.open(`newpage.html?id=${uniqueId}`, "_blank");
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const table = document.getElementById("tb");
-  const rows = table.getElementsByTagName("tr");
-  for (let i = 0; i < rows.length; i++) {
-    rows[i].addEventListener("click", function () {
-      console.log("clicked");
-      const rowIndex = this.getAttribute("data-index");
-      const jsonData = getDataForRow(rowIndex); // Implement this function to get the JSON data for the row index
-      const uniqueId = Date.now(); // Unique identifier for the new page
-      localStorage.setItem(`rowData-${uniqueId}`, JSON.stringify(jsonData));
-      window.open(`newpage.html?id=${uniqueId}`, "_blank");
-    });
-  }
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//   const table = document.getElementById("tb");
+//   const rows = table.getElementsByTagName("tr");
+//   for (let i = 0; i < rows.length; i++) {
+//     rows[i].addEventListener("click", function () {
+//       console.log("clicked");
+//       const rowIndex = this.getAttribute("data-index");
+//       const jsonData = getDataForRow(rowIndex); // Implement this function to get the JSON data for the row index
+//       const uniqueId = Date.now(); // Unique identifier for the new page
+//       localStorage.setItem(`rowData-${uniqueId}`, JSON.stringify(jsonData));
+//       window.open(`newpage.html?id=${uniqueId}`, "_blank");
+//     });
+//   }
+// });
 
-function getDataForRow(index) {
-  // Implement this function to get the JSON data for the given row index
-  // For demonstration purposes, return a sample JSON object
-  const jsonData = [
-    { name: "John Doe", age: 30, email: "john.doe@example.com" },
-    { name: "Jane Smith", age: 25, email: "jane.smith@example.com" },
-  ];
-  return jsonData[index];
-}
+// function getDataForRow(index) {
+//   // Implement this function to get the JSON data for the given row index
+//   // For demonstration purposes, return a sample JSON object
+//   const jsonData = [
+//     { name: "John Doe", age: 30, email: "john.doe@example.com" },
+//     { name: "Jane Smith", age: 25, email: "jane.smith@example.com" },
+//   ];
+//   return jsonData[index];
+// }
