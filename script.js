@@ -186,9 +186,11 @@ let maxHP = 725;
 let minChallenge = 0;
 let maxChallenge = 30;
 
-let monsterTypes = ['Humanoid', 'Dragon', 'Undead', 'Fiend', 'Monstrosity', 'Beast', 'Fey', 'Giant', 'Aberration', 'Celestial','Construct', 'Swarm'];
+let monsterTypes = ['HUMANOID', 'DRAGON', 'UNDEAD', 'FIEND', 'MONSTROSITY', 'BEAST', 'FEY', 'GIANT', 'ABERRATION', 'CELESTIAL','CONSTRUCT', 'SWARM'];
+monsterTypes = ['DRAGON']
 let monsterSizes = [ 'MEDIUM', 'LARGE', 'HUGE', 'GARGANTUAN', 'SMALL', 'TINY' ]
 let monsterAlignments = []
+let monsterName = ""
 
 function setFilter(filter) {}
 
@@ -196,7 +198,7 @@ function filterMonsters(monster) {
   // let monAl = false;
   if (minChallenge == 0 && maxChallenge == 30) {
     if (!(monster.Challenge == "-" || ((Number(monster.Challenge >= 0)) && ((monster.Challenge <= 30))))) {
-      return false
+      return "false"
     }
   }
   if (!(minChallenge <= monster.Challenge && monster.Challenge <= maxChallenge)) {
@@ -209,13 +211,20 @@ function filterMonsters(monster) {
     return false
   }
   monsterTypes.forEach((type) => {
-    if (monster.Type.includes(type)) {
+    console.log(type)
+    if (monster.Type.toUpperCase().includes("DRAGON")) {
       return false
     }
   });
   if (!monsterSizes.includes(monster.Size.toUpperCase())) {
     return false;
   }
+  if (!monster.Name.toLowerCase().includes(monsterName.toLowerCase())) {
+    return false;
+  }
+  console.log(monster.Type.toUpperCase().includes("DRAGON"))
+
+  return true
 }
 
 function printMonsters() {
@@ -242,6 +251,7 @@ function printMonsters() {
     // tr.push("<td>" + monster.AC + "</td>");
     tr.push("<td>" + monster.Type + "</td>");
     tr.push("<td>" + monster.Challenge + "</td>");
+    tr.push("<td>" + filterMonsters(monster) + "</td>");
     i++;
     if (monster.Alignment.includes("), ")) {
       monster.Alignment = monster.Alignment.slice(monster.Alignment.indexOf("), ") + 3)
