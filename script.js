@@ -186,7 +186,7 @@ let maxHP = 725;
 let minChallenge = 0;
 let maxChallenge = 30;
 
-let monsterTypes = ['HUMANOID', 'DRAGON', 'UNDEAD', 'FIEND', 'MONSTROSITY', 'BEAST', 'FEY', 'GIANT', 'ABERRATION', 'CELESTIAL','CONSTRUCT', 'SWARM'];
+let monsterTypes = ['HUMANOID', 'DRAGON', 'UNDEAD', 'FIEND', 'MONSTROSITY', 'BEAST', 'FEY', 'GIANT', 'ABERRATION', 'CELESTIAL','CONSTRUCT', 'SWARM', 'PLANT', 'OOZE', 'ELEMENTAL'];
 monsterTypes = ['DRAGON']
 let monsterSizes = [ 'MEDIUM', 'LARGE', 'HUGE', 'GARGANTUAN', 'SMALL', 'TINY' ]
 let monsterAlignments = []
@@ -194,11 +194,15 @@ let monsterName = ""
 
 function setFilter(filter) {}
 
+function filterMonsterTypes(monsterTypes) {
+
+}
+
 function filterMonsters(monster) {
   // let monAl = false;
   if (minChallenge == 0 && maxChallenge == 30) {
     if (!(monster.Challenge == "-" || ((Number(monster.Challenge >= 0)) && ((monster.Challenge <= 30))))) {
-      return "false"
+      return false
     }
   }
   if (!(minChallenge <= monster.Challenge && monster.Challenge <= maxChallenge)) {
@@ -210,12 +214,11 @@ function filterMonsters(monster) {
   if (!(minAC <= monster.AC && monster.AC <= maxAC)) {
     return false
   }
-  monsterTypes.forEach((type) => {
-    console.log(type)
-    if (monster.Type.toUpperCase().includes("DRAGON")) {
-      return false
-    }
-  });
+  
+  if (monsterTypes.some((type) => monster.Type.toUpperCase().indexOf(type) !== -1)) {
+    return false;
+  }
+
   if (!monsterSizes.includes(monster.Size.toUpperCase())) {
     return false;
   }
@@ -230,37 +233,38 @@ function filterMonsters(monster) {
 function printMonsters() {
   const tb = document.getElementById("tb");
   let tr = [];
-  let i = 0;
-  monsters.forEach((monster) => {
-    tr.push(
-      "<tr id=" +
-        monster.Name +
-        " data-id=" +
-        i +
-        "><td style='cursor:pointer' onclick='clickRows(" +
-        i +
-        ")'>" +
-        monster.Name +
-        "</td>"
-    );
-    let typeFirst = monster.Type[0].toUpperCase();
-    let typeRest = monster.Type.slice(1, monster.Type.length);
-    monster.Type = typeFirst + typeRest;
+  monsters.forEach((monster, idx) => {
+    if (filterMonsters(monster)) {
+      tr.push(
+        "<tr id=" +
+          monster.Name +
+          " data-id=" +
+          idx +
+          "><td style='cursor:pointer' onclick='clickRows(" +
+          idx +
+          ")'>" +
+          monster.Name +
+          "</td>"
+      );
+      let typeFirst = monster.Type[0].toUpperCase();
+      let typeRest = monster.Type.slice(1, monster.Type.length);
+      monster.Type = typeFirst + typeRest;
+  
+      tr.push("<td>" + monster.HP + "</td>");
+      // tr.push("<td>" + monster.AC + "</td>");
+      tr.push("<td>" + monster.Type + "</td>");
+      tr.push("<td>" + monster.Challenge + "</td>");
+      tr.push("<td>" + filterMonsters(monster) + "</td>");
 
-    tr.push("<td>" + monster.HP + "</td>");
-    // tr.push("<td>" + monster.AC + "</td>");
-    tr.push("<td>" + monster.Type + "</td>");
-    tr.push("<td>" + monster.Challenge + "</td>");
-    tr.push("<td>" + filterMonsters(monster) + "</td>");
-    i++;
-    if (monster.Alignment.includes("), ")) {
-      monster.Alignment = monster.Alignment.slice(monster.Alignment.indexOf("), ") + 3)
-    }
-    if (monster.Alignment.includes("typically")) {
-      monster.Alignment = monster.Alignment.slice(monster.Alignment.indexOf("typically") + 10)      
-    }
-    if (!(monsterAlignments.includes(monster.Alignment.toUpperCase()))) {
-      monsterAlignments.push(monster.Alignment.toUpperCase())
+      if (monster.Alignment.includes("), ")) {
+        monster.Alignment = monster.Alignment.slice(monster.Alignment.indexOf("), ") + 3)
+      }
+      if (monster.Alignment.includes("typically")) {
+        monster.Alignment = monster.Alignment.slice(monster.Alignment.indexOf("typically") + 10)      
+      }
+      if (!(monsterAlignments.includes(monster.Alignment.toUpperCase()))) {
+        monsterAlignments.push(monster.Alignment.toUpperCase())
+      }
     }
   });
   tb.innerHTML = tr.join("");
